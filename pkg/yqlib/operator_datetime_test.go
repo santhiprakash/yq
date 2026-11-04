@@ -15,6 +15,33 @@ var dateTimeOperatorScenarios = []expressionScenario{
 		},
 	},
 	{
+		description:    "Format: from RFC3339 datetime with a space separator",
+		subdescription: "RFC 3339 allows a space character instead of `T` between the date and the time.",
+		document:       `a: 2026-09-05 10:42:37.923487+00:00`,
+		expression:     `.a | format_datetime("Monday")`,
+		expected: []string{
+			"D0, P[a], (!!str)::Saturday\n",
+		},
+	},
+	{
+		skipDoc:     true,
+		description: "Format: from RFC3339 datetime with a lowercase t separator",
+		document:    `a: 2026-09-05t10:42:37Z`,
+		expression:  `.a | format_datetime("Monday")`,
+		expected: []string{
+			"D0, P[a], (!!str)::Saturday\n",
+		},
+	},
+	{
+		skipDoc:     true,
+		description: "Format: from RFC3339 datetime with a lowercase z offset",
+		document:    `a: 2026-09-05T10:42:37z`,
+		expression:  `.a | format_datetime("Monday")`,
+		expected: []string{
+			"D0, P[a], (!!str)::Saturday\n",
+		},
+	},
+	{
 		description:    "Format: from custom date time",
 		subdescription: "Use with_dtf to set a custom datetime format for parsing.",
 		document:       `a: Saturday, 15-Dec-01 at 2:59AM`,

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -53,6 +54,19 @@ func parseDateTime(layout string, datestring string) (time.Time, error) {
 
 	parsedTime, err := time.Parse(layout, datestring)
 	if err != nil && layout == time.RFC3339 {
+		// RFC 3339 section 5.6 permits a space or a lowercase "t" instead of
+		// "T" between the date and the time, and a lowercase "z" for UTC.
+		// Normalise them and retry before falling back to a date only parse.
+		normalised := datestring
+		if len(normalised) > 10 && (normalised[10] == ' ' || normalised[10] == 't') {
+			normalised = normalised[:10] + "T" + normalised[11:]
+		}
+		if strings.HasSuffix(normalised, "z") {
+			normalised = normalised[:len(normalised)-1] + "Z"
+		}
+		if parsedTime, err = time.Parse(layout, normalised); err == nil {
+			return parsedTime, nil
+		}
 		// try parsing the date time with only the date
 		return time.Parse("2006-01-02", datestring)
 	}

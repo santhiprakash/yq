@@ -402,6 +402,27 @@ var tomlScenarios = []formatScenario{
 		scenarioType: "decode",
 	},
 	{
+		skipDoc:      true,
+		description:  "datetime with a space separator",
+		input:        "A = 2026-09-05 10:42:37.923487+00:00",
+		expected:     "A: 2026-09-05 10:42:37.923487+00:00\n",
+		scenarioType: "decode",
+	},
+	{
+		skipDoc:      true,
+		description:  "datetime with a lowercase t separator",
+		input:        "A = 1979-05-27t07:32:00-08:00",
+		expected:     "A: 1979-05-27t07:32:00-08:00\n",
+		scenarioType: "decode",
+	},
+	{
+		skipDoc:      true,
+		description:  "datetime with a lowercase z offset",
+		input:        "A = 1979-05-27T07:32:00z",
+		expected:     "A: 1979-05-27T07:32:00z\n",
+		scenarioType: "decode",
+	},
+	{
 		skipDoc:       true,
 		description:   "blank",
 		input:         `A = "hello`,

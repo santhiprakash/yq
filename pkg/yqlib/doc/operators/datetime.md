@@ -41,6 +41,22 @@ will output
 a: Saturday, 15-Dec-01 at 2:59AM
 ```
 
+## Format: from RFC3339 datetime with a space separator
+RFC 3339 allows a space character instead of `T` between the date and the time.
+
+Given a sample.yml file of:
+```yaml
+a: 2026-09-05 10:42:37.923487+00:00
+```
+then
+```bash
+yq '.a | format_datetime("Monday")' sample.yml
+```
+will output
+```yaml
+Saturday
+```
+
 ## Format: from custom date time
 Use with_dtf to set a custom datetime format for parsing.
 
